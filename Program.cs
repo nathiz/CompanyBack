@@ -39,7 +39,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// **Aplica migrations automaticamente no início**
+// Aplica migrations automaticamente no início
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -58,7 +58,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// **Configuração do pipeline da API**
+//Configuração do pipeline da API
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -69,5 +69,5 @@ app.UseCors("CorsPolicy"); // Ativa o CORS configurado
 app.UseAuthorization(); // Garante autenticação/autorização
 app.MapControllers(); // Mapeia os controllers da API
 
-// **Executa a aplicação**
+//Executa a aplicação
 app.Run();
