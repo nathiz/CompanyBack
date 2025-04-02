@@ -32,11 +32,11 @@ public class ExampleData
         await _context.SaveChangesAsync();  // Salva o processo e garante que o Id foi gerado
 
         // Subprocessos de Recrutamento
-        var subProcess1 = new SubProcess { Nome = "Definição de perfil da vaga", ProcessId = processoRecrutamento.Id };
-        var subProcess2 = new SubProcess { Nome = "Divulgação da vaga", ProcessId = processoRecrutamento.Id };
-        var subProcess3 = new SubProcess { Nome = "Triagem de currículos", ProcessId = processoRecrutamento.Id };
-        var subProcess4 = new SubProcess { Nome = "Entrevistas", ProcessId = processoRecrutamento.Id };
-        var subProcess5 = new SubProcess { Nome = "Oferta de contratação", ProcessId = processoRecrutamento.Id };
+        var subProcess1 = new SubProcess { Nome = "Definição de perfil da vaga", ProcessoId = processoRecrutamento.Id };
+        var subProcess2 = new SubProcess { Nome = "Divulgação da vaga", ProcessoId = processoRecrutamento.Id };
+        var subProcess3 = new SubProcess { Nome = "Triagem de currículos", ProcessoId = processoRecrutamento.Id };
+        var subProcess4 = new SubProcess { Nome = "Entrevistas", ProcessoId = processoRecrutamento.Id };
+        var subProcess5 = new SubProcess { Nome = "Oferta de contratação", ProcessoId = processoRecrutamento.Id };
         _context.Subprocessos.AddRange(subProcess1, subProcess2, subProcess3, subProcess4, subProcess5);
         await _context.SaveChangesAsync();  // Salva os subprocessos
 

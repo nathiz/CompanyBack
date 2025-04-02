@@ -26,6 +26,12 @@ public class SubProcessService
     //Cria um novo subprocesso no banco de dados
     public async Task<SubProcess> CreateAsync(SubProcess subProcess)
     {
+        var processo = await _context.Processos.FindAsync(subProcess.ProcessoId);
+        if (processo == null)
+        {
+            throw new Exception("Processo associado não encontrado.");
+        }
+
         _context.Subprocessos.Add(subProcess);
         await _context.SaveChangesAsync();
         return subProcess;

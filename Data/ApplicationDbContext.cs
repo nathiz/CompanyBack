@@ -17,4 +17,15 @@ public class ApplicationDbContext : DbContext
     public DbSet<Ferramenta> Ferramentas { get; set; }
     public DbSet<Documento> Documentos { get; set; }
     public DbSet<DetalhamentoProcesso> DetalhamentoProcessos { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Process>()
+            .HasMany(p => p.Subprocessos)
+            .WithOne(s => s.Processo)
+            .HasForeignKey(s => s.ProcessoId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        base.OnModelCreating(modelBuilder);
+    }
 }
