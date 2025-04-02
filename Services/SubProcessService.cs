@@ -34,10 +34,11 @@ public class SubProcessService
     //Atualiza os dados de um subprocesso existente
     public async Task<bool> UpdateAsync(SubProcess subProcess)
     {
-        if (!_context.Subprocessos.Any(sp => sp.Id == subProcess.Id))
+        var existingSubProcess = await _context.Subprocessos.FindAsync(subProcess.Id);
+        if (existingSubProcess == null)
             return false;
 
-        _context.Entry(subProcess).State = EntityState.Modified;
+        _context.Entry(existingSubProcess).CurrentValues.SetValues(subProcess);
         await _context.SaveChangesAsync();
         return true;
     }
@@ -45,10 +46,11 @@ public class SubProcessService
     //Exclui um subprocesso do banco de dados
     public async Task<bool> DeleteAsync(int id)
     {
-        var subProcess = await _context.Subprocessos.FindAsync(id);
+        var subProcess = await _context.Subprocessos.Include(sp => sp.SubprocessosFilhos).FirstOrDefaultAsync(sp => sp.Id == id);
         if (subProcess == null)
             return false;
 
+        _context.Subprocessos.RemoveRange(subProcess.SubprocessosFilhos);
         _context.Subprocessos.Remove(subProcess);
         await _context.SaveChangesAsync();
         return true;

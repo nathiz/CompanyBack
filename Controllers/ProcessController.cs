@@ -37,33 +37,24 @@ public class ProcessoController : ControllerBase
 
     // POST: api/Processo
     [HttpPost]
-    public async Task<ActionResult<Process>> PostProcesso(Process processo)
+    public async Task<ActionResult<Process>> PostProcesso([FromBody] Process processo)
     {
         if (processo == null || string.IsNullOrEmpty(processo.Nome) || processo.AreaId <= 0)
         {
             return BadRequest("Nome e AreaId são obrigatórios.");
         }
 
-        // Verificar se a área existe
-        var areaExists = await _processoService.AreaExists(processo.AreaId); // Usando o service para verificar a área
-        if (!areaExists)
+        var area = await _context.Areas.FindAsync(processo.AreaId);
+        if (area == null)
         {
             return BadRequest("A área especificada não existe.");
         }
 
-        // Buscar a área e associar explicitamente ao processo
-        var area = await _context.Areas.FindAsync(processo.AreaId);
-        if (area == null)
-        {
-            return BadRequest("Área não encontrada.");
-        }
-        processo.Area = area; // Associando a área ao processo
+        processo.Area = null; // Evita erro na inserção
 
-        // Adicionar o processo ao banco de dados
         _context.Processos.Add(processo);
-        await _context.SaveChangesAsync(); // Salva as alterações
+        await _context.SaveChangesAsync();
 
-        // Retorna o processo recém-criado
         return CreatedAtAction(nameof(GetProcesso), new { id = processo.Id }, processo);
     }
 
